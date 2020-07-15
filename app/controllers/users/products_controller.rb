@@ -13,8 +13,17 @@ class Users::ProductsController < ApplicationController
 
   def new; end
 
+  def edit
+    product = Product.by_id(params[:product_id]).first
+    count_rate = product.count_rate + 1
+    total_star = product.total_star + params[:star].to_i
+    avgstar = total_star / count_rate.to_f
+    product.update_columns count_rate: count_rate, avgstar: avgstar, total_star: total_star
+  end
+
   def show
     @product = Product.find_by id: params[:id]
+    @reviews = @product.reviews
     return if @product
 
     flash[:error] = t "product.fail_find_product"

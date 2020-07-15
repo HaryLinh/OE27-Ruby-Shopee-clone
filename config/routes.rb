@@ -14,6 +14,12 @@ Rails.application.routes.draw do
       resources :categories do
         resources :products
       end
+      resource :cart, only: [:show]
+      resources :order_items, only: [:create, :update, :destroy]
+      resources :product_colors
+      resources :carts
+      resources :orders
+      resources :reviews
     end
 
     namespace :shops do

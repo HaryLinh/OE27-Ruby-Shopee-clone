@@ -4,6 +4,8 @@ class Shops::OrdersController < ShopsController
 
   def index
     @search = Order.by_status(params[:status])
+      .order_status
+      .by_created
       .includes(:user, :order_items)
       .search(params[:q])
     @orders = @search.result

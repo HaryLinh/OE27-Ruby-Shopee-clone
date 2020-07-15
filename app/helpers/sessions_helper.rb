@@ -41,11 +41,11 @@ module SessionsHelper
   end
 
   def total_order session_order
-    session_order.values.to_a.sum {|p| p["quantity"].to_i * p["price"].to_i} if session_order
+    session_order.values.to_a.sum {|p| p["quantity"].to_i * p["price"].to_f} if session_order
   end
 
   def total_item quantity, price
-    quantity.to_i * price.to_i
+    quantity.to_i * price.to_f
   end
 
   def count_orderitem

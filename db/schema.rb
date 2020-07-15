@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_26_020236) do
+ActiveRecord::Schema.define(version: 2020_07_16_005149) do
 
   create_table "brands", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "name"
@@ -61,8 +61,12 @@ ActiveRecord::Schema.define(version: 2020_06_26_020236) do
     t.bigint "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "products_id"
+    t.bigint "product_colors_id"
     t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_colors_id"], name: "index_order_items_on_product_colors_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
+    t.index ["products_id"], name: "index_order_items_on_products_id"
   end
 
   create_table "orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -72,6 +76,7 @@ ActiveRecord::Schema.define(version: 2020_06_26_020236) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "phone"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -81,6 +86,7 @@ ActiveRecord::Schema.define(version: 2020_06_26_020236) do
     t.bigint "color_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "product_color_id"
     t.index ["color_id"], name: "index_product_colors_on_color_id"
     t.index ["product_id"], name: "index_product_colors_on_product_id"
   end
@@ -97,6 +103,9 @@ ActiveRecord::Schema.define(version: 2020_06_26_020236) do
     t.string "slug"
     t.text "description"
     t.datetime "deleted_at"
+    t.integer "count_rate"
+    t.integer "total_star"
+    t.float "avgstar"
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["user_id"], name: "index_products_on_user_id"
@@ -132,7 +141,9 @@ ActiveRecord::Schema.define(version: 2020_06_26_020236) do
 
   add_foreign_key "images", "products"
   add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "product_colors", column: "product_colors_id"
   add_foreign_key "order_items", "products"
+  add_foreign_key "order_items", "products", column: "products_id"
   add_foreign_key "orders", "users"
   add_foreign_key "product_colors", "colors"
   add_foreign_key "product_colors", "products"

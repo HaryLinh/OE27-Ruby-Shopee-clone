@@ -25,6 +25,9 @@
               </tbody>
             </table>
           </div>
+          <div class="product-pagination">
+              <%= paginate @orders, theme: Settings.paginate_theme %>
+          </div>
         </div>
       </div>
     </div>
