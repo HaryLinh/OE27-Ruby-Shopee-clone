@@ -1,43 +1,37 @@
 <section class="cart-section section-b-space">
   <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <table class="table cart-table table-responsive-xs">
-          <thead>
-            <tr class="table-head">
-              <th scope="col"><%= t "order_item.image" %></th>
-              <th scope="col"><%= t "order_item.product_name" %></th>
-              <th scope="col"><%= t "order_item.color" %></th>
-              <th scope="col"><%= t "order_item.price" %></th>
-              <th scope="col"><%= t "order_item.quantity" %></th>
-              <th scope="col"><%= t "order_item.action" %></th>
-              <th scope="col"><%= t "order_item.total" %></th>
-            </tr>
-          </thead>
-          <%= render "cart" %>
-        </table>
-        <table class="table cart-table table-responsive-md">
-          <tfoot>
-            <tr>
-              <td><%= t "order.total" %></td>
-              <td>
-                <h2 class="total" id="total-order"><%= total_order session[:order] %></h2>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+     <div class="theme-tab">
+        <ul class="tabs tab-title">
+          <li class="current">
+            <%= link_to "New order", "tab-4" %>
+          </li>
+          <li>
+            <%= link_to "Delivering", "tab-5" %>
+          </li>
+          <li>
+            <%= link_to "Shiped", "tab-6" %>
+          </li>
+        </ul>
+        <div class="tab-content-cls">
+          <div id="tab-4" class="tab-content active default">
+            <%= render "new_order" %>
+          </div>
+          <div id="tab-5" class="tab-content">
+            <tbody>
+              <% if @order_shipping %>
+                <%= render "deliverling", orders: @order_shipping %>
+              <% end %>
+            </tbody>
+            </tbody>
+          </div>
+          <div id="tab-6" class="tab-content">
+            <tbody>
+              <% if @order_checked %>
+                <%= render "deliverling", orders: @order_checked %>
+              <% end %>
+            </tbody>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="row cart-buttons">
-      <div class="col-6">
-       <%= link_to t("order.continue"), root_url, class: "btn btn-solid" %>
-      </div>
-      <div class="col-6">
-        <%= link_to t("order.checkout"), new_order_path, class: "btn btn-solid" %>
-      </div>
-    </div>
-    <div id="data_a">
-      <%= hidden_field :sessions, nil, data: {session: session[:order].to_json }, class: "data-session" %>
-    </div>
   </div>
 </section>

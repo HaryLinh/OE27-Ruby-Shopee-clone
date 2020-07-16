@@ -17,8 +17,18 @@
     </div>
     <div class="product-detail">
       <div>
-        <div class="rating"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-         <i class="fa fa-star"></i></div>
+        <div class="rating">
+          <% if star_int? product %>
+            <% product.avg_star.to_i.times do %>
+              <i class="fa fa-star"></i>
+            <% end %>
+          <% else %>
+            <% product.avg_star.to_i.times do %>
+              <i class="fa fa-star"></i>
+            <% end %>
+            <i class="fa fa-star-half"></i>
+          <% end %>
+        </div>
           <%= link_to product_path product.id do %>
             <h6><%= product.name %></h6>
           <% end %>

@@ -21,6 +21,8 @@ Rails.application.routes.draw do
       resources :product_colors
       resources :carts
       resources :orders
+      resources :reviews
+      resources :ratings
     end
 
     namespace :shops do

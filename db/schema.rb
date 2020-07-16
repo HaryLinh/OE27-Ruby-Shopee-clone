@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_14_091512) do
+ActiveRecord::Schema.define(version: 2020_07_16_081151) do
 
   create_table "brands", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "name"
@@ -61,17 +61,20 @@ ActiveRecord::Schema.define(version: 2020_07_14_091512) do
     t.bigint "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "product_color_id"
     t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_color_id"], name: "index_order_items_on_product_colors_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
   end
 
   create_table "orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.float "total_amount"
-    t.integer "status"
+    t.integer "status", default: 0
     t.string "address"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "phone"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -97,9 +100,20 @@ ActiveRecord::Schema.define(version: 2020_07_14_091512) do
     t.string "slug"
     t.text "description"
     t.datetime "deleted_at"
+    t.integer "count_rate", default: 0
+    t.integer "total_star", default: 0
+    t.float "avg_star", default: 0.0
     t.index ["brand_id"], name: "index_products_on_brand_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["user_id"], name: "index_products_on_user_id"
+  end
+
+  create_table "ratings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "star"
+    t.bigint "product_id"
+    t.bigint "user_id"
+    t.index ["product_id"], name: "index_ratings_on_product_id"
+    t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
   create_table "reviews", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -127,7 +141,7 @@ ActiveRecord::Schema.define(version: 2020_07_14_091512) do
     t.string "adress"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "remember_token"
+    t.string "remember_digest"
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -137,6 +151,7 @@ ActiveRecord::Schema.define(version: 2020_07_14_091512) do
 
   add_foreign_key "images", "products"
   add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "product_colors"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "users"
   add_foreign_key "product_colors", "colors"
@@ -144,6 +159,8 @@ ActiveRecord::Schema.define(version: 2020_07_14_091512) do
   add_foreign_key "products", "brands"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "users"
+  add_foreign_key "ratings", "products"
+  add_foreign_key "ratings", "users"
   add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "users"
 end

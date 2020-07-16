@@ -35,6 +35,24 @@
                     <td><%= t "product.brand" %></td>
                     <td><%= @product.brand_name %></td>
                   </tr>
+                  <tr>
+                    <td><%= t "product.rate" %>:</td>
+                    <td>
+                      <div id="rating", class="rating">
+                        <% if current_user && (rate @product.id, current_user.id) %>
+                          <% rate(@product.id, current_user.id).star.to_i.times do %>
+                            <i class="fa fa-star"></i>
+                          <% end %>
+                        <% else %>
+                          <% (1..5).to_a.reverse_each do |index| %>
+                            <%= radio_button_tag :rating, index, false,
+                            class: "rate" , id: "star#{index}" %>
+                            <%= label_tag "star#{index}", nil, title: "Awesome - #{index} stars",class: "full" %>
+                          <% end %>
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -79,6 +97,7 @@
                 </div>
               <% end %>
             </div>
+            <%= hidden_field_tag :link, nil, data: {url: ratings_path }, class: "data-link" %>
           </div>
         </div>
       </div>
@@ -127,6 +146,14 @@
             </div>
           </div>
           <div class="tab-pane fade" id="top-review" role="tabpanel" aria-labelledby="review-top-tab">
+            <div class="theme-form">
+              <%= render "form_review" %>
+            </div>
+            <ul class="comment-list form-control ">
+              <% if @reviews %>
+                <%= render @reviews %>
+              <% end %>
+            </ul>
           </div>
         </div>
       </div>
